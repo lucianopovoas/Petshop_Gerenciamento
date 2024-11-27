@@ -88,29 +88,12 @@ public class PetshopReservas {
         }
     }
 
-    // Exibir todas as solicitações
-    public static void exibirSolicitacoes(Connection conn) throws SQLException {
-        String sql = "SELECT * FROM Solicitacoes";
-        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                int idSolicitacao = rs.getInt("id_solicitacao");
-                int idUsuario = rs.getInt("id_usuario");
-                int idEspaco = rs.getInt("id_espaco");
-                String dataReserva = rs.getString("data_reserva");
-                String horaReserva = rs.getString("hora_reserva");
-                String status = rs.getString("status");
-                System.out.println("ID Solicitação: " + idSolicitacao + ", ID Usuário: " + idUsuario + ", ID Espaço: " + idEspaco + ", Data Reserva: " + dataReserva + ", Hora Reserva: " + horaReserva + ", Status: " + status);
-            }
-        }
-    }
-
     // Menu do sistema
     public static void menu() {
         System.out.println("Sistema de Reservas de Espaços Físicos do Petshop");
         System.out.println("1. Solicitar Reserva");
         System.out.println("2. Gerenciar Solicitações");
         System.out.println("3. Exibir Histórico de Solicitações");
-        System.out.println("4. Exibir Todas as Solicitações");
         System.out.println("0. Sair");
     }
 
