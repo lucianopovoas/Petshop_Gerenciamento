@@ -61,6 +61,7 @@ public class PetshopReservas {
             pstmt.executeUpdate();
             System.out.println("Solicitação " + status + " com sucesso!");
 
+            // Inserir no histórico
             String sqlHistorico = "INSERT INTO Historico_Solicitacoes (id_solicitacao, status, justificativa, id_gestor) VALUES (?, ?, ?, ?)";
             try (PreparedStatement pstmtHistorico = conn.prepareStatement(sqlHistorico)) {
                 pstmtHistorico.setInt(1, idSolicitacao);
@@ -73,17 +74,18 @@ public class PetshopReservas {
         }
     }
 
-    // Exibir o histórico de solicitações
-    public static void exibirHistoricoSolicitacoes(Connection conn) throws SQLException {
-        String sql = "SELECT * FROM Historico_Solicitacoes";
+    // Exibir todas as solicitações
+    public static void exibirSolicitacoes(Connection conn) throws SQLException {
+        String sql = "SELECT * FROM Solicitacoes";
         try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                int idHistorico = rs.getInt("id_historico");
                 int idSolicitacao = rs.getInt("id_solicitacao");
+                int idUsuario = rs.getInt("id_usuario");
+                int idEspaco = rs.getInt("id_espaco");
+                String dataReserva = rs.getString("data_reserva");
+                String horaReserva = rs.getString("hora_reserva");
                 String status = rs.getString("status");
-                String justificativa = rs.getString("justificativa");
-                String dataAvaliacao = rs.getString("data_avaliacao");
-                System.out.println("ID Histórico: " + idHistorico + ", ID Solicitação: " + idSolicitacao + ", Status: " + status + ", Justificativa: " + justificativa + ", Data Avaliação: " + dataAvaliacao);
+                System.out.println("ID Solicitação: " + idSolicitacao + ", ID Usuário: " + idUsuario + ", ID Espaço: " + idEspaco + ", Data Reserva: " + dataReserva + ", Hora Reserva: " + horaReserva + ", Status: " + status);
             }
         }
     }
@@ -137,10 +139,6 @@ public class PetshopReservas {
                         break;
                     }
                     case 3: {
-                        exibirHistoricoSolicitacoes(conn);
-                        break;
-                    }
-                    case 4: {
                         exibirSolicitacoes(conn);
                         break;
                     }
